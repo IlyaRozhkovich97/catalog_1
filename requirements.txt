@@ -1,0 +1,6 @@
+Django
+psycopg2-binary
+pillow
+ipython
+django-stubs
+pytils~=0.4.1
