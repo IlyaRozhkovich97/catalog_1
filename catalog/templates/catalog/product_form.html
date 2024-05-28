@@ -1,23 +1,23 @@
 {% extends 'catalog/base.html' %}
 {% block content %}
-    <div class="container">
+    <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        {% if object %}
-                            <h5 class="card-title">Редактировать продукт</h5>
-                        {% else %}
-                            <h5 class="card-title">Создать новый продукт</h5>
-                        {% endif %}
+                <div class="card shadow-sm">
+                    <div class="card-header text-center">
+                        <h5 class="card-title">
+                            {% if object %}
+                                Редактировать продукт
+                            {% else %}
+                                Создать новый продукт
+                            {% endif %}
+                        </h5>
                     </div>
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="mb-3">
-                                {{ form.as_p }}
-                            </div>
-                            <div class="text-center">
+                            {{ form.as_p }}
+                            <div class="text-center mt-4">
                                 <button type="submit" class="btn btn-primary">
                                     {% if object %}
                                         Сохранить
