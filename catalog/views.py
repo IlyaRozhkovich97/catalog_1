@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from .forms import ProductForm
 
 import csv
 
@@ -58,29 +59,26 @@ class ProductDetailView(DetailView):
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ('name', 'category', 'description', 'purchase_price', 'image')
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:products')
 
     def form_valid(self, form):
         if form.is_valid():
-            new_prod = form.save()
+            new_prod = form.save(commit=False)
             new_prod.slug = slugify(new_prod.name)
             new_prod.save()
-
         return super().form_valid(form)
-
 
 class ProductUpdateView(UpdateView):
     model = Product
-    fields = ('name', 'category', 'description', 'purchase_price', 'image')
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:products')
 
     def form_valid(self, form):
         if form.is_valid():
-            new_prod = form.save()
+            new_prod = form.save(commit=False)
             new_prod.slug = slugify(new_prod.name)
             new_prod.save()
-
         return super().form_valid(form)
 
     def get_success_url(self):
