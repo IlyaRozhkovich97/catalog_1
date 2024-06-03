@@ -1,23 +1,17 @@
 {% extends 'catalog/base.html' %}
-{% load my_tags %}
 {% block content %}
-<div class="album py-5 bg-body-tertiary">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col">
-                <div class="card shadow-sm">
-                    {% if product.image %}
-                    <img src="{{ product.image | media_filter }}" class="card-img-top" alt="{{ product.name }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }} ({{ product.slug }})</h5>
-                        <p class="card-text"><strong>Категория:</strong> {{ product.category }}</p>
-                        <p class="card-text"><strong>Описание:</strong> {{ product.description | truncatechars:100 }}</p>
-                        <p class="card-text"><strong>Цена:</strong> {{ product.purchase_price }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Просмотры: {{ product.views_counter }}</small>
-                    </div>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Подтверждение удаления продукта</h5>
+                    <p class="card-text">Вы уверены, что хотите безвозвратно удалить продукт "{{ object.name }}"?</p>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <a class="btn btn-secondary" href="{% url 'catalog:products' %}" role="button">Отменить</a>
+                    </form>
                 </div>
             </div>
         </div>
