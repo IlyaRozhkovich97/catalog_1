@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 from pytils.translit import slugify
 
-from catalog.models import Product
+from catalog.models import Product, Version
 
 
 class HomePageView(TemplateView):
@@ -46,6 +46,13 @@ class ProductListView(ListView):
         queryset = queryset.filter(is_published=True)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = context['object_list']
+        for product in products:
+            product.active_version = Version.objects.filter(product=product, is_current=True).first()
+        return context
+
 
 class ProductDetailView(DetailView):
     model = Product
@@ -68,6 +75,7 @@ class ProductCreateView(CreateView):
             new_prod.slug = slugify(new_prod.name)
             new_prod.save()
         return super().form_valid(form)
+
 
 class ProductUpdateView(UpdateView):
     model = Product
