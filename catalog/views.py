@@ -79,14 +79,15 @@ class ProductCreateView(CreateView):
 
 class ProductUpdateView(UpdateView):
     model = Product
-    form_class = ProductForm
+    fields = ('name', 'category', 'description', 'purchase_price', 'image')
     success_url = reverse_lazy('catalog:products')
 
     def form_valid(self, form):
         if form.is_valid():
-            new_prod = form.save(commit=False)
+            new_prod = form.save()
             new_prod.slug = slugify(new_prod.name)
             new_prod.save()
+
         return super().form_valid(form)
 
     def get_success_url(self):
