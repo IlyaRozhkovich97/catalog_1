@@ -1,10 +1,11 @@
 {% extends 'catalog/base.html' %}
 {% load my_tags %}
 {% block content %}
+
 <div class="album py-5 bg-white">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for product in object_list %}
+            {% for product in products %}
             <div class="col">
                 <div class="card h-100 border-0 shadow">
                     <img src="{{ product.image | media_filter }}" class="card-img-top" alt="{{ product.name }}">
@@ -21,8 +22,10 @@
                             </div>
                         </div>
                         <h5 class="card-title">{{ product.name }}</h5>
-                        {% if product.active_version %}
-                        <p>Active Version: {{ product.active_version.version_name }} ({{ product.active_version.version_number }})</p>
+                        {% if product.current_version %}
+                        <p>Active Version: {{ product.current_version.version_name }} ({{ product.current_version.version_number }})</p>
+                        {% else %}
+                        <p>No active version</p>
                         {% endif %}
                     </div>
                 </div>

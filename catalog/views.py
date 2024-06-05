@@ -40,17 +40,19 @@ class ContactInformationView(TemplateView):
 
 class ProductListView(ListView):
     model = Product
+    template_name = 'catalog/product_list.html'
+    context_object_name = 'products'
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(is_published=True)
-        return queryset
+        return queryset.filter(is_published=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        products = context['object_list']
-        for product in products:
-            product.active_version = Version.objects.filter(product=product, is_current=True).first()
+        for product in context['products']:
+            current_version = Version.objects.filter(product=product, is_current=True).first()
+            if current_version:
+                product.current_version = current_version
         return context
 
 
