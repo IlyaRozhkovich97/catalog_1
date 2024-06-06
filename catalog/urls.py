@@ -12,4 +12,5 @@ urlpatterns = [
     path('product/new/', views.ProductCreateView.as_view(), name='product_create'),  # cоздание продукта
     path('product/edit/<int:pk>/', views.ProductUpdateView.as_view(), name='product_update'),  # редактирование продукта
     path('product/delete/<int:pk>/', views.ProductDeleteView.as_view(), name='product_delete'),  # удаление продукта
+
 ]
