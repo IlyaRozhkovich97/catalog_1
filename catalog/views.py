@@ -1,11 +1,11 @@
 from django.http import HttpResponseRedirect
-from .forms import ProductForm
-
+from .forms import ProductForm, VersionFormSet
 import csv
-
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
 from pytils.translit import slugify
+from django.contrib import messages
 
 from catalog.models import Product, Version
 
@@ -69,33 +69,78 @@ class ProductDetailView(DetailView):
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
+    template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:products')
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['versions'] = VersionFormSet(self.request.POST)
+        else:
+            data['versions'] = VersionFormSet()
+        return data
+
     def form_valid(self, form):
-        if form.is_valid():
-            new_prod = form.save(commit=False)
-            new_prod.slug = slugify(new_prod.name)
-            new_prod.save()
-        return super().form_valid(form)
+        context = self.get_context_data()
+        versions = context['versions']
+        if form.is_valid() and versions.is_valid():
+            self.object = form.save(commit=False)
+            self.object.slug = slugify(self.object.name)
+            self.object.save()
+            versions.instance = self.object
+            versions.save()
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
+    template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:products')
 
-    def form_valid(self, form):
-        if form.is_valid():
-            new_prod = form.save()
-            new_prod.slug = slugify(new_prod.name)
-            new_prod.save()
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data['versions'] = VersionFormSet(self.request.POST, instance=self.object)
+        else:
+            data['versions'] = VersionFormSet(instance=self.object)
+        return data
 
-        return super().form_valid(form)
+    def form_valid(self, form):
+        context = self.get_context_data()
+        versions = context['versions']
+        if form.is_valid() and versions.is_valid():
+            self.object = form.save(commit=False)
+            self.object.slug = slugify(self.object.name)
+            self.object.save()
+            versions.instance = self.object
+            versions.save()
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def get_success_url(self):
         return reverse_lazy('catalog:specific_product', args=[self.kwargs['pk']])
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.views_counter += 1
+        self.object.save()
+        return self.object
 
 
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:products')
+
+class VersionDeleteView(DeleteView):
+    model = Version
+    template_name = 'catalog/version_confirm_delete.html'
+    success_url = reverse_lazy('catalog:products')
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, 'Версия успешно удалена.')
+        return response

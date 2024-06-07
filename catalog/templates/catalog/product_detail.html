@@ -14,7 +14,20 @@
                         <p class="card-text"><strong>Категория:</strong> {{ product.category }}</p>
                         <p class="card-text"><strong>Описание:</strong> {{ product.description }}</p>
                         <p class="card-text"><strong>Цена:</strong> {{ product.purchase_price|currency }}₽</p>
+                        <p class="card-text"><strong>Дата и время создания:</strong> {{ product.created_at|date:"d.m.Y" }} {{ product.created_at|time:"H:i" }}</p>
+                        <p class="card-text"><strong>Дата и время последнего изменения:</strong> {{ product.updated_at|date:"d.m.Y" }} {{ product.updated_at|time:"H:i" }}</p>
+                        <h5 class="mt-4">Версии продукта</h5>
+                        <ul>
+                            {% for version in product.version_set.all %}
+                                <li>{{ version.version_name }} ({{ version.version_number }})
+                                    {% if version.is_current %} - Текущая версия{% endif %}
+                                    <a href="{% url 'catalog:version_delete' product.pk version.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
                         <a href="{% url 'catalog:products' %}" class="btn btn-primary" role="button">Назад</a>
+                        <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary" role="button">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger" role="button">Удалить</a>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Просмотры: {{ product.views_counter }}</small>
