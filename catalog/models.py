@@ -1,6 +1,7 @@
 from django.db import models
 from pytils.translit import slugify
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="наименование")
     description = models.CharField(max_length=255, verbose_name="описание")
@@ -11,6 +12,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
+
 
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="наименование")
@@ -47,6 +49,7 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category", "purchase_price"]
+
 
 class Version(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
