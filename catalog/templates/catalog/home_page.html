@@ -45,7 +45,7 @@
                         {% if product.image %}
                         <img src="{{ product.image.url }}" class="img-fluid mb-3" alt="{{ product.name }}">
                         {% endif %}
-                        <h1 class="card-title pricing-card-title">{{ product.purchase_price|currency }} рублей</h1>
+                        <h1 class="card-title pricing-card-title">{{ product.purchase_price|currency }}₽</h1>
                         <p class="card-text">
                             {% if product.description|length > 100 %}
                                 {{ product.description|slice:":100" }}...
