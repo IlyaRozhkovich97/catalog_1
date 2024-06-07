@@ -10,6 +10,7 @@ from pytils.translit import slugify
 from catalog.models import Product, Version
 
 
+
 class HomePageView(TemplateView):
     template_name = 'catalog/home_page.html'
 
@@ -58,6 +59,10 @@ class ProductListView(ListView):
 
 class ProductDetailView(DetailView):
     model = Product
+
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.object = None
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
