@@ -10,7 +10,6 @@ from pytils.translit import slugify
 from catalog.models import Product, Version
 
 
-
 class HomePageView(TemplateView):
     template_name = 'catalog/home_page.html'
 
@@ -60,10 +59,6 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
 
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.object = None
-
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         self.object.views_counter += 1
@@ -86,7 +81,7 @@ class ProductCreateView(CreateView):
 
 class ProductUpdateView(UpdateView):
     model = Product
-    fields = ('name', 'category', 'description', 'purchase_price', 'image')
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:products')
 
     def form_valid(self, form):

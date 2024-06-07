@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, ValidationError, BooleanField
+from django.forms import ModelForm, BooleanField
 from .models import Product
 
 
@@ -13,7 +13,7 @@ class StyleFormMixin(ModelForm):
                 field.widget.attrs['class'] = 'form-control'
 
 
-class ProductForm(StyleFormMixin,forms.ModelForm):
+class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'category', 'description', 'purchase_price', 'image']

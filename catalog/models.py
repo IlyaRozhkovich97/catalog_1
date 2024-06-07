@@ -42,8 +42,6 @@ class Product(models.Model):
     is_published = models.BooleanField(default=True, verbose_name="опубликован")
     slug = models.CharField(max_length=255, verbose_name="slug", null=True, blank=True)
 
-
-
     def __str__(self):
         return f"{self.name} {self.category}"
 
