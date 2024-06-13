@@ -137,22 +137,9 @@
             </button>
         </li>
     </ul>
-
 <header data-bs-theme="dark">
 {% include 'catalog/includes/upper_menu.html' %}
 </header>
-
-<main>
-    <section class="py-5 text-center container">
-        <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Каталог</h1>
-                <p>
-                    <a class="btn btn-primary" href="{% url 'catalog:product_create' %}" role="button">Создать товар</a>
-                </p>
-            </div>
-        </div>
-    </section>
 
     {% block content %}
     {% endblock %}

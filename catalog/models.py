@@ -1,6 +1,8 @@
 from django.db import models
 from pytils.translit import slugify
 
+NULLABLE = {'blank': True, "null": True}
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="наименование")

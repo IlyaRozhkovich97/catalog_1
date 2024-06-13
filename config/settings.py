@@ -1,17 +1,13 @@
 import os
 from pathlib import Path
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = 'django-insecure-dw_l8mg&7uw$1cm#yveiguj+&0gbu(@0u+rkkt3t=0jf%9@@&i'
-
 
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +19,7 @@ INSTALLED_APPS = [
 
     'catalog',
     'blog',
+    'users',
 
 ]
 
@@ -56,7 +53,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -67,7 +63,6 @@ DATABASES = {
         'PORT': '5432',  # порт, на котором работает PostgreSQL
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -84,7 +79,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Europe/Moscow'
 
@@ -96,7 +90,6 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
 
-
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (BASE_DIR / 'static',)
@@ -107,3 +100,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 FIXTURES_ROOT = os.path.join(BASE_DIR, 'fixtures')
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
