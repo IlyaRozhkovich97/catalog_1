@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from users.models import User
-from django import forms
 from django.forms import ModelForm, BooleanField
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class StyleFormMixin(ModelForm):
@@ -29,3 +30,8 @@ class UserProfileForm(UserChangeForm, StyleFormMixin):
         super().__init__(*args, **kwargs)
 
         self.fields['password'].widget = forms.HiddenInput()
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))

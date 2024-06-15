@@ -1,5 +1,7 @@
 from django.db import models
 from pytils.translit import slugify
+from django.contrib.auth.models import User
+from django.conf import settings
 
 NULLABLE = {'blank': True, "null": True}
 
@@ -20,6 +22,8 @@ class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="наименование")
     description = models.TextField(blank=True, null=True, verbose_name="описание")
     image = models.ImageField(upload_to="product/image", blank=True, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                              verbose_name='Владелец', **NULLABLE)
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,

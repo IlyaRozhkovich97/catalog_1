@@ -6,6 +6,9 @@ from django.views.generic import CreateView, UpdateView
 from config import settings
 from users.forms import UserRegisterForm, UserProfileForm
 from users.models import User
+from django.contrib.auth.views import LoginView
+from .forms import CustomAuthenticationForm
+
 CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*!&$#?=@'
 
 
@@ -67,3 +70,8 @@ class ProfileView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
+    template_name = 'users/login.html'

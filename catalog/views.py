@@ -3,7 +3,7 @@ from .forms import ProductForm, VersionFormSet
 import csv
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from pytils.translit import slugify
 from django.contrib import messages
 
@@ -66,7 +66,7 @@ class ProductDetailView(DetailView):
         return self.object
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
@@ -86,6 +86,7 @@ class ProductCreateView(CreateView):
         if form.is_valid() and versions.is_valid():
             self.object = form.save(commit=False)
             self.object.slug = slugify(self.object.name)
+            self.object.owner = self.request.user
             self.object.save()
             versions.instance = self.object
             versions.save()
@@ -94,7 +95,7 @@ class ProductCreateView(CreateView):
             return self.form_invalid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
@@ -134,6 +135,7 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:products')
+
 
 class VersionDeleteView(DeleteView):
     model = Version
