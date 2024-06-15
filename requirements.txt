@@ -1,6 +1,9 @@
-Django
+Django~=5.0.6
 psycopg2-binary
 pillow
 ipython
 django-stubs
-pytils
+pytils~=0.4.1
+asgiref~=3.8.1
+sqlparse~=0.5.0
+dotenv

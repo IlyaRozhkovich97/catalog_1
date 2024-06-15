@@ -1,9 +1,23 @@
-import os
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+env_path = BASE_DIR / '.env'
+load_dotenv(env_path)
 
-SECRET_KEY = 'django-insecure-dw_l8mg&7uw$1cm#yveiguj+&0gbu(@0u+rkkt3t=0jf%9@@&i'
+# Отладочные сообщения
+print(f"Path to .env file: {env_path}")
+print(f"EMAIL_HOST: {os.getenv('EMAIL_HOST')}")
+print(f"EMAIL_PORT: {os.getenv('EMAIL_PORT')}")
+print(f"EMAIL_USE_TLS: {os.getenv('EMAIL_USE_TLS')}")
+print(f"EMAIL_USE_SSL: {os.getenv('EMAIL_USE_SSL')}")
+print(f"EMAIL_HOST_USER: {os.getenv('EMAIL_HOST_USER')}")
+print(f"EMAIL_HOST_PASSWORD: {os.getenv('EMAIL_HOST_PASSWORD')}")
+
+SECRET_KEY = 'django-insecure-8#xcmefm*qdl#p(a!4^)t_b&0x82@u8^&@)6hsvq#^mf0=wb3m'
 
 DEBUG = True
 
@@ -20,7 +34,6 @@ INSTALLED_APPS = [
     'catalog',
     'blog',
     'users',
-
 ]
 
 MIDDLEWARE = [
@@ -104,3 +117,13 @@ FIXTURES_ROOT = os.path.join(BASE_DIR, 'fixtures')
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "solod-spb78@yandex.ru"
+EMAIL_HOST_PASSWORD = "qvwukwqtxysnimdi"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
