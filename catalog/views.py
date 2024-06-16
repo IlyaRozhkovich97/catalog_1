@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView, TemplateView, CreateView,
 from django.contrib.auth.mixins import LoginRequiredMixin
 from pytils.translit import slugify
 from django.contrib import messages
-
+from django.core.exceptions import PermissionDenied
 from catalog.models import Product, Version
 
 
@@ -78,6 +78,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             data['versions'] = VersionFormSet(self.request.POST)
         else:
             data['versions'] = VersionFormSet()
+        data['user'] = self.request.user
         return data
 
     def form_valid(self, form):
@@ -85,7 +86,6 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         versions = context['versions']
         if form.is_valid() and versions.is_valid():
             self.object = form.save(commit=False)
-            self.object.slug = slugify(self.object.name)
             self.object.owner = self.request.user
             self.object.save()
             versions.instance = self.object
@@ -107,6 +107,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             data['versions'] = VersionFormSet(self.request.POST, instance=self.object)
         else:
             data['versions'] = VersionFormSet(instance=self.object)
+        data['user'] = self.request.user
         return data
 
     def form_valid(self, form):
@@ -132,12 +133,23 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return self.object
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:products')
 
+    def get_object(self, queryset=None):
+        product = super().get_object(queryset)
+        if product.owner != self.request.user and not self.request.user.is_superuser:
+            raise PermissionDenied("Вы не имеете права удалять этот продукт")
+        return product
 
-class VersionDeleteView(DeleteView):
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, 'Продукт успешно удален.')
+        return response
+
+
+class VersionDeleteView(LoginRequiredMixin, DeleteView):
     model = Version
     template_name = 'catalog/version_confirm_delete.html'
     success_url = reverse_lazy('catalog:products')

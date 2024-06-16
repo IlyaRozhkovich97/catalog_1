@@ -167,3 +167,7 @@ cython_debug/
 
 # Игнорировать папку venv/
 venv/
+
+.env
+contact_info.csv
+test_smtp.py

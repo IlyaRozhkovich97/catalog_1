@@ -1,25 +1,19 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-env_path = BASE_DIR / '.env'
-load_dotenv(env_path)
 
-# Отладочные сообщения
-print(f"Path to .env file: {env_path}")
-print(f"EMAIL_HOST: {os.getenv('EMAIL_HOST')}")
-print(f"EMAIL_PORT: {os.getenv('EMAIL_PORT')}")
-print(f"EMAIL_USE_TLS: {os.getenv('EMAIL_USE_TLS')}")
-print(f"EMAIL_USE_SSL: {os.getenv('EMAIL_USE_SSL')}")
-print(f"EMAIL_HOST_USER: {os.getenv('EMAIL_HOST_USER')}")
-print(f"EMAIL_HOST_PASSWORD: {os.getenv('EMAIL_HOST_PASSWORD')}")
 
-SECRET_KEY = 'django-insecure-8#xcmefm*qdl#p(a!4^)t_b&0x82@u8^&@)6hsvq#^mf0=wb3m'
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-_=zdnlfchy)-!(3*12l07w&^0b%09wqe5r7$h8w40e8-4cjk@3'
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 ALLOWED_HOSTS = ["*"]
 
@@ -72,8 +66,8 @@ DATABASES = {
         'NAME': 'db_homework_20',
         'USER': 'postgres',
         'PASSWORD': 'Smash2012',
-        'HOST': 'localhost',  # если база данных находится на локальном компьютере
-        'PORT': '5432',  # порт, на котором работает PostgreSQL
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
