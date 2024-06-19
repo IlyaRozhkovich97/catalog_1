@@ -28,7 +28,7 @@
                             {% endfor %}
                         </ul>
                         <a href="{% url 'catalog:products' %}" class="btn btn-primary" role="button">Назад</a>
-                        {% if user.is_authenticated %}
+                        {% if user == product.owner or perms.catalog.change_product %}
                             <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary" role="button">Редактировать</a>
                             <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger" role="button">Удалить</a>
                             <a href="{% url 'catalog:unpublish_product' product.pk %}" class="btn btn-warning" role="button">Отменить публикацию</a>
