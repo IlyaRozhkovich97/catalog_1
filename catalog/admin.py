@@ -4,7 +4,7 @@ from .models import Product, Version, Category
 
 class VersionInline(admin.TabularInline):
     model = Version
-    extra = 1  # Количество пустых форм для добавления новых версий
+    extra = 1
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -12,6 +12,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category', 'is_published')
     search_fields = ('name', 'description')
     inlines = [VersionInline]
+
+    fields = ('name', 'category', 'purchase_price', 'description', 'is_published')
 
 
 class CategoryAdmin(admin.ModelAdmin):

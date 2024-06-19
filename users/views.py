@@ -18,12 +18,12 @@ class RegisterView(CreateView):
         token = generate_token()
         form.instance.token = token
         user = form.save()
-        user.email_send(
+        user.email_user(
             subject='Верификация почты',
-            body=f'Поздравляем с регистрацией на iStore \n'
-                 f'Для подтверждения регистрации перейдите по ссылке: \n'
-                 f'http://127.0.0.1:8000/users/confirm/{user.token} \n'
-                 f'Если вы не причастны к регистрации игнорируйте это письмо.'
+            message=f'Поздравляем с регистрацией на iStore \n'
+                    f'Для подтверждения регистрации перейдите по ссылке: \n'
+                    f'http://127.0.0.1:8000/users/confirm/{user.token} \n'
+                    f'Если вы не причастны к регистрации игнорируйте это письмо.'
         )
         return super().form_valid(form)
 

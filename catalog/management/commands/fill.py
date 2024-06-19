@@ -1,8 +1,9 @@
 import os
-from django.core.management import BaseCommand
 import json
 from config.settings import FIXTURES_ROOT
 from catalog.models import Category, Product
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import Group, Permission
 
 
 class Command(BaseCommand):
