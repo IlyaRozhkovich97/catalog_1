@@ -1,13 +1,14 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from .forms import ProductForm, VersionFormSet
 import csv
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from pytils.translit import slugify
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from catalog.models import Product, Version
+from django.shortcuts import get_object_or_404, redirect
 
 
 class HomePageView(TemplateView):
@@ -95,11 +96,32 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:products')
+    permission_required = ('catalog.can_edit_product_description', 'catalog.can_edit_product_category')
+
+    def dispatch(self, request, *args, **kwargs):
+        print(f"Проверка аутентификации: {request.user.is_authenticated}")
+        if not request.user.is_authenticated:
+            print("Пользователь не аутентифицирован")
+            return redirect('users:login')
+
+        print(f"Пользователь {request.user.username} аутентифицирован")
+
+        if not request.user.has_perm('catalog.can_edit_product_description'):
+            print(f"Пользователь {request.user.username} не имеет права редактировать описание продукта")
+        if not request.user.has_perm('catalog.can_edit_product_category'):
+            print(f"Пользователь {request.user.username} не имеет права редактировать категорию продукта")
+
+        if not request.user.has_perm('catalog.can_edit_product_description') and not request.user.has_perm(
+                'catalog.can_edit_product_category'):
+            print(f"Пользователь {request.user.username} не имеет необходимых прав")
+            return HttpResponseForbidden("У вас нет прав для редактирования этого продукта.")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -152,3 +174,14 @@ class VersionDeleteView(LoginRequiredMixin, DeleteView):
         response = super().delete(request, *args, **kwargs)
         messages.success(request, 'Версия успешно удалена.')
         return response
+
+
+def unpublish_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if not request.user.has_perm('catalog.can_unpublish_product'):
+        return HttpResponseForbidden("У вас нет прав для отмены публикации продукта.")
+
+    product.is_published = False
+    product.save()
+    messages.success(request, 'Продукт успешно снят с публикации.')
+    return redirect('catalog:products')

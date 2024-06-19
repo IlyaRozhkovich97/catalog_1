@@ -39,7 +39,7 @@ class Product(models.Model):
         verbose_name="количество просмотров",
         help_text="Укажите количество просмотров",
     )
-    is_published = models.BooleanField(default=False, verbose_name="опубликован")
+    is_published = models.BooleanField(default=False, verbose_name='Опубликован')
     slug = models.SlugField(max_length=255, verbose_name="slug", null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -56,8 +56,8 @@ class Product(models.Model):
         ordering = ["name", "category", "purchase_price"]
         permissions = [
             ("can_unpublish_product", "Можно отменить публикацию продукта"),
-            ("can_change_description", "Можно изменить описание продукта"),
-            ("can_change_category", "Можно изменить категорию товара"),
+            ("can_edit_product_description", "Можно редактировать описание продукта"),
+            ("can_edit_product_category", "Можно редактировать категорию товара"),
         ]
 
 
