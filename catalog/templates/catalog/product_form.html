@@ -37,6 +37,11 @@
                                 </button>
                             </div>
                         </form>
+                        {% if object and user.is_authenticated %}
+                            <div class="text-center mt-4">
+                                <a href="{% url 'catalog:unpublish_product' object.pk %}" class="btn btn-secondary">Отменить публикацию</a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

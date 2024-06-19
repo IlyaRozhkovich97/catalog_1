@@ -1,6 +1,7 @@
 from django.urls import path
 from catalog.apps import CatalogConfig
 from . import views
+from .views import unpublish_product
 
 app_name = CatalogConfig.name
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path('product/delete/<int:pk>/', views.ProductDeleteView.as_view(), name='product_delete'),  # удаление продукта
     path('product/<int:pk>/unpublish/', views.unpublish_product, name='unpublish_product'),  # отмена публикации продукта
     path('product/<int:product_id>/version/<int:pk>/delete/', views.VersionDeleteView.as_view(), name='version_delete'),
+    path('product/unpublish/<int:product_id>/', unpublish_product, name='unpublish_product'),
 ]

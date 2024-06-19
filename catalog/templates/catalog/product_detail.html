@@ -31,6 +31,7 @@
                         {% if user.is_authenticated %}
                             <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary" role="button">Редактировать</a>
                             <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger" role="button">Удалить</a>
+                            <a href="{% url 'catalog:unpublish_product' product.pk %}" class="btn btn-warning" role="button">Отменить публикацию</a>
                         {% endif %}
                     </div>
                     <div class="card-footer">
