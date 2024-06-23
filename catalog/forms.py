@@ -16,7 +16,7 @@ class StyleFormMixin(ModelForm):
 class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'category', 'description', 'purchase_price', 'image', 'is_published']
+        fields = ['name', 'category', 'description', 'purchase_price', 'image']
 
     def clean_name(self):
         name = self.cleaned_data.get('name')
@@ -44,3 +44,7 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
 
 
 VersionFormSet = inlineformset_factory(Product, Version, form=VersionForm, extra=1, can_delete=True)
+
+
+class UnpublishForm(forms.Form):
+    confirm = forms.BooleanField(required=True, label="Подтвердите отмену публикации")

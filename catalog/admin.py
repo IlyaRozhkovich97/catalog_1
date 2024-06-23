@@ -8,12 +8,12 @@ class VersionInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'purchase_price', 'created_at', 'updated_at', 'is_published')
+    list_display = ('name', 'category', 'purchase_price', 'created_at', 'updated_at', 'is_published', 'owner')
     list_filter = ('category', 'is_published')
     search_fields = ('name', 'description')
     inlines = [VersionInline]
 
-    fields = ('name', 'category', 'purchase_price', 'description', 'is_published')
+    fields = ('name', 'category', 'purchase_price', 'description', 'is_published' , 'owner')
 
 
 class CategoryAdmin(admin.ModelAdmin):

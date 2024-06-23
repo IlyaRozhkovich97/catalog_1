@@ -1,6 +1,6 @@
-from django.conf import settings
 from django.db import models
 from pytils.translit import slugify
+from django.conf import settings
 
 NULLABLE = {'blank': True, "null": True}
 
@@ -39,8 +39,12 @@ class Product(models.Model):
         verbose_name="количество просмотров",
         help_text="Укажите количество просмотров",
     )
-    is_published = models.BooleanField(default=False, verbose_name='Опубликован')
+    is_published = models.BooleanField(default=True, verbose_name="опубликован")
     slug = models.SlugField(max_length=255, verbose_name="slug", null=True, blank=True)
+
+    def unpublish(self):
+        self.is_published = False
+        self.save()
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -54,11 +58,6 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category", "purchase_price"]
-        permissions = [
-            ("can_unpublish_product", "Можно отменить публикацию продукта"),
-            ("can_edit_product_description", "Можно редактировать описание продукта"),
-            ("can_edit_product_category", "Можно редактировать категорию товара"),
-        ]
 
 
 class Version(models.Model):
