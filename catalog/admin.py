@@ -13,7 +13,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     inlines = [VersionInline]
 
-    fields = ('name', 'category', 'purchase_price', 'description', 'is_published' , 'owner')
+    fields = ('name', 'category', 'purchase_price', 'description', 'is_published', 'owner')
 
 
 class CategoryAdmin(admin.ModelAdmin):

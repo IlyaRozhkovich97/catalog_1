@@ -3,7 +3,7 @@ from .forms import ProductForm, VersionFormSet
 import csv
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from pytils.translit import slugify
 from django.contrib import messages
 from catalog.models import Product, Version
@@ -155,10 +155,11 @@ class VersionDeleteView(LoginRequiredMixin, DeleteView):
         return response
 
 
-class ProductUnpublishView(LoginRequiredMixin, FormView):
+class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'catalog/product_unpublish.html'
     form_class = UnpublishForm
     success_url = reverse_lazy('catalog:products')
+    permission_required = 'catalog.can_unpublish_product'
 
     def form_valid(self, form):
         product_id = self.kwargs['pk']
@@ -166,3 +167,31 @@ class ProductUnpublishView(LoginRequiredMixin, FormView):
         product.unpublish()
         messages.success(self.request, 'Продукт успешно снят с публикации.')
         return super().form_valid(form)
+
+
+class ProductUpdateDescriptionView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Product
+    fields = ['description']
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products')
+    permission_required = 'catalog.change_description_product'
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.views_counter += 1
+        self.object.save()
+        return self.object
+
+
+class ProductUpdateCategoryView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Product
+    fields = ['category']
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products')
+    permission_required = 'catalog.change_category_product'
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.views_counter += 1
+        self.object.save()
+        return self.object
