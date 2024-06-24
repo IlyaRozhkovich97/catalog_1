@@ -10,6 +10,8 @@ from django.contrib import messages
 from catalog.models import Product, Version
 from .forms import UnpublishForm
 from django.views.generic import FormView
+from django.shortcuts import get_object_or_404
+
 
 class HomePageView(TemplateView):
     template_name = 'catalog/home_page.html'
@@ -104,19 +106,9 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     permission_required = ('catalog.change_product',)
 
     def dispatch(self, request, *args, **kwargs):
-        print(f"Проверка аутентификации: {request.user.is_authenticated}")
-        print(f"Данные пользователя: {request.user}")
-
-        if not request.user.is_authenticated:
-            print("Пользователь не аутентифицирован")
-            return redirect('users:login')
-
-        print(f"Пользователь {request.user} аутентифицирован")
-
-        if not request.user.has_perm('catalog.change_product'):
-            print(f"Пользователь {request.user} не имеет права редактировать продукт")
-            return HttpResponseForbidden("У вас нет прав для редактирования этого продукта.")
-
+        product = get_object_or_404(Product, pk=self.kwargs['pk'])
+        if product.owner != request.user:
+            return HttpResponseForbidden("Вы не являетесь владельцем этого продукта.")
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
