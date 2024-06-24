@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import redirect
 from .forms import ProductForm, VersionFormSet
 import csv
 from django.urls import reverse_lazy
@@ -9,7 +10,6 @@ from django.contrib import messages
 from catalog.models import Product, Version
 from .forms import UnpublishForm
 from django.views.generic import FormView
-
 
 class HomePageView(TemplateView):
     template_name = 'catalog/home_page.html'
@@ -96,11 +96,28 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:products')
+    permission_required = ('catalog.change_product',)
+
+    def dispatch(self, request, *args, **kwargs):
+        print(f"Проверка аутентификации: {request.user.is_authenticated}")
+        print(f"Данные пользователя: {request.user}")
+
+        if not request.user.is_authenticated:
+            print("Пользователь не аутентифицирован")
+            return redirect('users:login')
+
+        print(f"Пользователь {request.user} аутентифицирован")
+
+        if not request.user.has_perm('catalog.change_product'):
+            print(f"Пользователь {request.user} не имеет права редактировать продукт")
+            return HttpResponseForbidden("У вас нет прав для редактирования этого продукта.")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -134,9 +151,26 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return self.object
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:products')
+    permission_required = 'catalog.delete_product'
+
+    def dispatch(self, request, *args, **kwargs):
+        print(f"Проверка аутентификации: {request.user.is_authenticated}")
+        print(f"Данные пользователя: {request.user}")
+
+        if not request.user.is_authenticated:
+            print("Пользователь не аутентифицирован")
+            return redirect('users:login')
+
+        print(f"Пользователь {request.user} аутентифицирован")
+
+        if not request.user.has_perm('catalog.delete_product'):
+            print(f"Пользователь {request.user} не имеет права удалять продукт")
+            return HttpResponseForbidden("У вас нет прав для удаления этого продукта.")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
@@ -144,10 +178,27 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         return response
 
 
-class VersionDeleteView(LoginRequiredMixin, DeleteView):
+class VersionDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Version
     template_name = 'catalog/version_confirm_delete.html'
     success_url = reverse_lazy('catalog:products')
+    permission_required = 'catalog.delete_version'
+
+    def dispatch(self, request, *args, **kwargs):
+        print(f"Проверка аутентификации: {request.user.is_authenticated}")
+        print(f"Данные пользователя: {request.user}")
+
+        if not request.user.is_authenticated:
+            print("Пользователь не аутентифицирован")
+            return redirect('users:login')
+
+        print(f"Пользователь {request.user} аутентифицирован")
+
+        if not request.user.has_perm('catalog.delete_version'):
+            print(f"Пользователь {request.user} не имеет права удалять версию")
+            return HttpResponseForbidden("У вас нет прав для удаления этой версии.")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
@@ -161,37 +212,25 @@ class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, FormView
     success_url = reverse_lazy('catalog:products')
     permission_required = 'catalog.can_unpublish_product'
 
+    def dispatch(self, request, *args, **kwargs):
+        print(f"Проверка аутентификации: {request.user.is_authenticated}")
+        print(f"Данные пользователя: {request.user}")
+
+        if not request.user.is_authenticated:
+            print("Пользователь не аутентифицирован")
+            return redirect('users:login')
+
+        print(f"Пользователь {request.user} аутентифицирован")
+
+        if not request.user.has_perm('catalog.can_unpublish_product'):
+            print(f"Пользователь {request.user} не имеет права снимать продукт с публикации")
+            return HttpResponseForbidden("У вас нет прав для снятия продукта с публикации.")
+
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         product_id = self.kwargs['pk']
         product = Product.objects.get(id=product_id)
         product.unpublish()
         messages.success(self.request, 'Продукт успешно снят с публикации.')
         return super().form_valid(form)
-
-
-class ProductUpdateDescriptionView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    model = Product
-    fields = ['description']
-    template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:products')
-    permission_required = 'catalog.change_description_product'
-
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        self.object.views_counter += 1
-        self.object.save()
-        return self.object
-
-
-class ProductUpdateCategoryView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    model = Product
-    fields = ['category']
-    template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:products')
-    permission_required = 'catalog.change_category_product'
-
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        self.object.views_counter += 1
-        self.object.save()
-        return self.object

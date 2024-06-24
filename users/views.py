@@ -8,6 +8,7 @@ from .utils import generate_token, generate_password
 from django.contrib.auth.views import LoginView
 
 
+# Класс для регистрации новых пользователей
 class RegisterView(CreateView):
     model = User
     form_class = UserRegisterForm
@@ -28,6 +29,7 @@ class RegisterView(CreateView):
         return super().form_valid(form)
 
 
+# Функция для верификации пользователя по токену
 def verify_view(request, token):
     user = get_object_or_404(User, token=token)
     user.is_verified = True
@@ -35,6 +37,7 @@ def verify_view(request, token):
     return render(request, 'users/verify.html')
 
 
+# Функция для сброса пароля
 def res_password(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -53,6 +56,7 @@ def res_password(request):
     return render(request, 'users/reset_password.html')
 
 
+# Класс для обновления профиля пользователя
 class ProfileView(UpdateView):
     model = User
     form_class = UserProfileForm
@@ -62,6 +66,7 @@ class ProfileView(UpdateView):
         return self.request.user
 
 
+# Класс для обработки входа пользователя в систему
 class CustomLoginView(LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'users/login.html'

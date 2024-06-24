@@ -1,0 +1,224 @@
+[
+{
+  "model": "catalog.category",
+  "pk": 1,
+  "fields": {
+    "name": "iPhone",
+    "description": "Smartphone"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 2,
+  "fields": {
+    "name": "iPad",
+    "description": "Tablet"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 9,
+  "fields": {
+    "name": "Смартфон Apple iPhone 15 Pro Max 256 ГБ («Натуральный титан» | Natural Titanium)",
+    "description": "Новый корпус, новые возможности камеры, более мощный процессор и разъём USB-C – это лишь основные нововведения iPhone 15 Pro Max. Самый большой и технически совершенный айфон 15-й серии станет идеальным гаджетом для любых задач и отличным инструментом для покорения соцсетей и видеохостингов. Всех, кто пропустил 14-е поколение, ждут дополнительные приятные изменения в виде таких фишек как Always-On, динамический остров и 48-Мегапиксельная основная камера, а улучшенная автономность позволит реже думать о зарядке.",
+    "image": "product/image/iPhone_sgPXwEY.jpeg",
+    "owner": 2,
+    "category": 1,
+    "purchase_price": 116990,
+    "created_at": "2024-05-31T00:00:00Z",
+    "updated_at": "2024-06-23T11:36:55.881Z",
+    "views_counter": 122,
+    "is_published": true,
+    "slug": "smartfon-apple-iphone-15-pro-max-256-gb-naturalnyij-titan--natural-titanium"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 10,
+  "fields": {
+    "name": "Планшет Apple iPad Pro 13\", 256 ГБ, Wi-Fi («Чёрный космос» | Space Black) (2024)",
+    "description": "Огромный экран, от которого не оторвать глаз. Мощный процессор, готовый к любым задачам. Огромный потенциал для использования в самых разных сценариях. И всё это в тонком как бритва корпусе – именно таким получился \"большой\" iPad Pro 2024 года с инновационным 13-дюймовым OLED-экраном, который также порадует вас поддержкой Apple Pencil Pro. Да и назвать его большим при столь малом весе и не укладывающейся в голове толщине сложно. При этом в Apple не забыли об автономности, камерах и использовании всевозможных аксессуаров.",
+    "image": "product/image/iPad_EoWxXNT.jpeg",
+    "owner": 2,
+    "category": 2,
+    "purchase_price": 157990,
+    "created_at": "2024-06-07T00:00:00Z",
+    "updated_at": "2024-06-23T06:15:23.229Z",
+    "views_counter": 143,
+    "is_published": true,
+    "slug": "planshet-apple-ipad-pro-13-256-gb-wi-fi-chyornyij-kosmos--space-black-2024"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 35,
+  "fields": {
+    "name": "11212",
+    "description": "1",
+    "image": "",
+    "owner": 42,
+    "category": 1,
+    "purchase_price": 1,
+    "created_at": "2024-06-19T16:45:04.876Z",
+    "updated_at": "2024-06-23T05:24:05.945Z",
+    "views_counter": 28,
+    "is_published": false,
+    "slug": "11212"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 37,
+  "fields": {
+    "name": "123123123",
+    "description": "123123123",
+    "image": "",
+    "owner": 42,
+    "category": 1,
+    "purchase_price": 123123123,
+    "created_at": "2024-06-21T13:55:05.520Z",
+    "updated_at": "2024-06-23T05:24:23.294Z",
+    "views_counter": 1,
+    "is_published": false,
+    "slug": "123123123"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 42,
+  "fields": {
+    "name": "1",
+    "description": "12",
+    "image": "",
+    "owner": 2,
+    "category": 1,
+    "purchase_price": 12,
+    "created_at": "2024-06-23T05:42:09.737Z",
+    "updated_at": "2024-06-23T05:42:09.750Z",
+    "views_counter": 0,
+    "is_published": false,
+    "slug": "1"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 43,
+  "fields": {
+    "name": "12",
+    "description": "12",
+    "image": "",
+    "owner": 2,
+    "category": 1,
+    "purchase_price": 12,
+    "created_at": "2024-06-23T05:42:42.519Z",
+    "updated_at": "2024-06-23T05:42:42.523Z",
+    "views_counter": 0,
+    "is_published": false,
+    "slug": "12"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 44,
+  "fields": {
+    "name": "123",
+    "description": "123",
+    "image": "",
+    "owner": 42,
+    "category": 1,
+    "purchase_price": 12,
+    "created_at": "2024-06-23T06:00:29.276Z",
+    "updated_at": "2024-06-23T06:00:29.280Z",
+    "views_counter": 0,
+    "is_published": false,
+    "slug": "123"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 45,
+  "fields": {
+    "name": "12",
+    "description": "12",
+    "image": "",
+    "owner": 42,
+    "category": 1,
+    "purchase_price": 12,
+    "created_at": "2024-06-23T06:03:57.080Z",
+    "updated_at": "2024-06-23T06:03:57.086Z",
+    "views_counter": 0,
+    "is_published": false,
+    "slug": "12"
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 12,
+  "fields": {
+    "product": 9,
+    "version_number": "15",
+    "version_name": "iPhone",
+    "is_current": true
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 13,
+  "fields": {
+    "product": 10,
+    "version_number": "13",
+    "version_name": "iPad",
+    "is_current": true
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 35,
+  "fields": {
+    "product": 37,
+    "version_number": "123",
+    "version_name": "123",
+    "is_current": false
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 39,
+  "fields": {
+    "product": 42,
+    "version_number": "12",
+    "version_name": "12",
+    "is_current": false
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 40,
+  "fields": {
+    "product": 43,
+    "version_number": "12",
+    "version_name": "12",
+    "is_current": false
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 41,
+  "fields": {
+    "product": 44,
+    "version_number": "12",
+    "version_name": "12",
+    "is_current": false
+  }
+},
+{
+  "model": "catalog.version",
+  "pk": 42,
+  "fields": {
+    "product": 45,
+    "version_number": "12",
+    "version_name": "12",
+    "is_current": false
+  }
+}
+]
