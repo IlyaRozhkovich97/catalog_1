@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 from catalog.apps import CatalogConfig
 from . import views
 from .views import ProductUnpublishView
@@ -15,4 +16,5 @@ urlpatterns = [
     path('product/delete/<int:pk>/', views.ProductDeleteView.as_view(), name='product_delete'),  # удаление продукта
     path('product/<int:product_id>/version/<int:pk>/delete/', views.VersionDeleteView.as_view(), name='version_delete'),
     path('product/<int:pk>/unpublish/', ProductUnpublishView.as_view(), name='product_unpublish'),
+    path('my-view/', cache_page(60 * 15)(views.my_view), name='my_view'),
 ]

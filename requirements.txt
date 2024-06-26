@@ -7,3 +7,4 @@ pytils
 asgiref
 sqlparse
 dotenv
+django-redis

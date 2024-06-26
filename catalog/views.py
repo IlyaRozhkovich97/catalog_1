@@ -11,6 +11,9 @@ from catalog.models import Product, Version
 from .forms import UnpublishForm
 from django.views.generic import FormView
 from django.shortcuts import get_object_or_404
+from django.core.cache import cache
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 
 class HomePageView(TemplateView):
@@ -226,3 +229,12 @@ class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, FormView
         product.unpublish()
         messages.success(self.request, 'Продукт успешно снят с публикации.')
         return super().form_valid(form)
+
+
+@cache_page(60 * 15)  # Кэширование страницы на 15 минут
+def my_view(request):
+    message = cache.get('my_key')
+    if not message:
+        message = 'Тест, Redis!'
+        cache.set('my_key', message, timeout=60*15)
+    return render(request, 'catalog/test_cache.html', {'value': message})
