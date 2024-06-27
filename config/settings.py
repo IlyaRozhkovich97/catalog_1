@@ -128,9 +128,3 @@ if CACHE_ENABLED:
             "TIMEOUT": 300
         }
     }
-
-print(f"DATABASE NAME: {os.getenv('NAME')}")
-print(f"DATABASE USER: {os.getenv('USER')}")
-print(f"DATABASE PASSWORD: {os.getenv('PASSWORD')}")
-print(f"DATABASE HOST: {os.getenv('HOST')}")
-print(f"DATABASE PORT: {os.getenv('PORT')}")
