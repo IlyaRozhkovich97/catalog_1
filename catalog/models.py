@@ -9,7 +9,6 @@ class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="наименование")
     description = models.CharField(max_length=255, verbose_name="описание")
 
-
     def __str__(self):
         return f"{self.name}"
 

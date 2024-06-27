@@ -13,7 +13,6 @@ from django.views.generic import FormView
 from django.shortcuts import get_object_or_404
 from django.core.cache import cache
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
 
 
 class HomePageView(TemplateView):
@@ -231,10 +230,12 @@ class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, FormView
         return super().form_valid(form)
 
 
-@cache_page(60 * 15)  # Кэширование страницы на 15 минут
 def my_view(request):
     message = cache.get('my_key')
     if not message:
         message = 'Тест, Redis!'
-        cache.set('my_key', message, timeout=60*15)
+        cache.set('my_key', message, timeout=60 * 15)
+        print("Значения не было в кэше. Установка нового значения: " + message)
+    else:
+        print("Значение из кэша: " + message)
     return render(request, 'catalog/test_cache.html', {'value': message})
